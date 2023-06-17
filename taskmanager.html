@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <style>
+    /* Basic styling for the task manager */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .task-input {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .task-input input[type="text"] {
+      flex-grow: 1;
+      padding: 5px;
+    }
+
+    .task-input input[type="date"] {
+      padding: 5px;
+      margin-right: 10px;
+    }
+
+    .task-input select {
+      padding: 5px;
+      margin-right: 10px;
+    }
+
+    .task-input input[type="submit"] {
+      padding: 5px 10px;
+    }
+
+    .task-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .task-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+      padding: 5px;
+      background-color: #f1f1f1;
+    }
+
+    .task-list li .delete-btn {
+      background-color: #ff0000;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Task Manager</h1>
+
+  <div class="task-input">
+    <input type="text" id="task-input" placeholder="Enter a task...">
+    <input type="date" id="deadline-input">
+    <select id="priority-input">
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+    <input type="submit" id="add-task-btn" value="Add Task">
+  </div>
+
+  <ul class="task-list" id="task-list"></ul>
+
+  <script>
+    // JavaScript logic for task management
+    // Get DOM elements
+    const taskInput = document.getElementById('task-input');
+    const deadlineInput = document.getElementById('deadline-input');
+    const priorityInput = document.getElementById('priority-input');
+    const addTaskBtn = document.getElementById('add-task-btn');
+    const taskList = document.getElementById('task-list');
+
+    // Add task event listener
+    addTaskBtn.addEventListener('click', function(e) {
+      e.preventDefault(); // Prevent form submission
+
+      const task = taskInput.value.trim(); // Get task value and trim whitespace
+      const deadline = deadlineInput.value;
+      const priority = priorityInput.value;
+
+      if (task !== '') {
+        // Create list item element
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span>${task}</span>
+          <span>Deadline: ${deadline}</span>
+          <span>Priority: ${priority}</span>
+          <button class="delete-btn">Delete</button>
+        `;
+
+        // Delete task event listener
+        li.querySelector('.delete-btn').addEventListener('click', function() {
+          li.remove(); // Remove the task when delete button is clicked
+        });
+
+        // Append the task to the task list
+        taskList.appendChild(li);
+
+        // Clear the input fields
+        taskInput.value = '';
+        deadlineInput.value = '';
+        priorityInput.value = 'low';
+      }
+    });
+  </script>
+</body>
+</html>

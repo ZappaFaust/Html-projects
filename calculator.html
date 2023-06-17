@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculator</title>
+  <style>
+    /* CSS Styles */
+    .calculator {
+      width: 200px;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border-radius: 5px;
+    }
+
+    .calculator input {
+      width: 100%;
+      margin-bottom: 5px;
+      text-align: right;
+    }
+
+    .calculator .line {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .calculator .line .number {
+      flex-basis: 33.33%;
+      box-sizing: border-box;
+      padding: 2px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="result" readonly>
+    <div class="line">
+      <div class="number" onclick="appendSymbol('7')">7</div>
+      <div class="number" onclick="appendSymbol('8')">8</div>
+      <div class="number" onclick="appendSymbol('9')">9</div>
+    </div>
+    <div class="line">
+      <div class="number" onclick="appendSymbol('4')">4</div>
+      <div class="number" onclick="appendSymbol('5')">5</div>
+      <div class="number" onclick="appendSymbol('6')">6</div>
+    </div>
+    <div class="line">
+      <div class="number" onclick="appendSymbol('1')">1</div>
+      <div class="number" onclick="appendSymbol('2')">2</div>
+      <div class="number" onclick="appendSymbol('3')">3</div>
+    </div>
+    <div class="line">
+      <div class="number" onclick="appendSymbol('0')">0</div>
+      <div class="number" onclick="appendSymbol('.')">.</div>
+      <div class="number" onclick="calculateResult()">=</div>
+    </div>
+    <div class="line">
+      <div class="number" onclick="appendSymbol('/')">/</div>
+      <div class="number" onclick="appendSymbol('*')">*</div>
+      <div class="number" onclick="appendSymbol('-')">-</div>
+      <div class="number" onclick="appendSymbol('+')">+</div>
+    </div>
+    <div class="line">
+      <div class="number" onclick="clearResult()">C</div>
+      <div class="number" onclick="deleteLast()">DEL</div>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript Code
+
+    function appendSymbol(symbol) {
+      var result = document.getElementById('result');
+      result.value += symbol;
+    }
+
+    function calculateResult() {
+      var result = document.getElementById('result');
+      var expression = result.value;
+
+      try {
+        var answer = eval(expression);
+        result.value = formatNumber(answer);
+      } catch (error) {
+        result.value = 'Error';
+      }
+    }
+
+    function clearResult() {
+      var result = document.getElementById('result');
+      result.value = '';
+    }
+
+    function deleteLast() {
+      var result = document.getElementById('result');
+      result.value = result.value.slice(0, -1);
+    }
+
+    function formatNumber(number) {
+      return number.toLocaleString('en-US');
+    }
+  </script>
+</body>
+</html>
