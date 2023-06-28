@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic Tac Toe</title>
+    <style>
+        /* CSS styles for tic-tac-toe board */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            width: 300px;
+            height: 300px;
+        }
+
+        .board .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #333;
+            font-size: 80px;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+        }
+
+        .back-btn {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic Tac Toe</h1>
+    <p id="turn-message">Player 1's Turn</p>
+    <div class="board" id="board">
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+    </div>
+    <button class="back-btn" onclick="goBack()">Back to Menu</button>
+
+    <script>
+        // Tic Tac Toe game logic
+
+        const board = document.getElementById('board');
+        const cells = [...board.getElementsByClassName('cell')];
+        const winningCombinations = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
+        ];
+
+        let currentPlayer = 'X';
+        let isGameOver = false;
+        let opponent = '';
+
+        // Retrieve opponent from URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        opponent = urlParams.get('opponent');
+
+        // Add event listener to each cell
+        cells.forEach(cell => {
+            cell.addEventListener('click', () => {
+                if (!isGameOver && cell.textContent === '') {
+                    cell.textContent = currentPlayer;
+                    cell.style.cursor = 'default';
+
+                    if (checkWin(currentPlayer)) {
+                        isGameOver = true;
+                        displayResult(`Player ${currentPlayer} wins!`);
+                    } else if (checkDraw()) {
+                        isGameOver = true;
+                        displayResult("It's a draw!");
+                    } else {
+                        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                        document.getElementById('turn-message').textContent = `Player ${currentPlayer}'s Turn`;
+
+                        if (opponent === 'cpu' && currentPlayer === 'O') {
+                            setTimeout(makeCPUMove, 500);
+                        }
+                    }
+                }
+            });
+        });
+
+        function checkWin(player) {
+            return winningCombinations.some(combination => {
+                return combination.every(index => cells[index].textContent === player);
+            });
+        }
+
+        function checkDraw() {
+            return cells.every(cell => cell.textContent !== '');
+        }
+
+        function displayResult(message) {
+            document.getElementById('turn-message').textContent = message;
+        }
+
+        function makeCPUMove() {
+            const emptyCells = cells.filter(cell => cell.textContent === '');
+            const randomIndex = Math.floor(Math.random() * emptyCells.length);
+            emptyCells[randomIndex].textContent = currentPlayer;
+            emptyCells[randomIndex].style.cursor = 'default';
+
+            if (checkWin(currentPlayer)) {
+                isGameOver = true;
+                displayResult(`Player ${currentPlayer} wins!`);
+            } else if (checkDraw()) {
+                isGameOver = true;
+                displayResult("It's a draw!");
+            } else {
+                currentPlayer = 'X';
+                document.getElementById('turn-message').textContent = `Player ${currentPlayer}'s Turn`;
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

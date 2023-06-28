@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game Menu</title>
+</head>
+<body>
+    <h1>Game Menu</h1>
+    <h2>Choose the opponent:</h2>
+    <input type="radio" id="playerOpponent" name="opponent" value="player" checked>
+    <label for="playerOpponent">Player</label>
+    <input type="radio" id="cpuOpponent" name="opponent" value="cpu">
+    <label for="cpuOpponent">CPU</label>
+    <br><br>
+    <h2>Choose the game:</h2>
+    <button onclick="startGame('tic_tac_toe')">Tic Tac Toe</button>
+    <button onclick="startGame('chess')">Chess</button>
+    
+
+    <script>
+        // Menu logic
+
+        function startGame(game) {
+            const opponent = document.querySelector('input[name="opponent"]:checked').value;
+            // Redirect to respective game based on opponent and game selection
+            window.location.href = `${game}.html?opponent=${opponent}`;
+        }
+    </script>
+</body>
+</html>
